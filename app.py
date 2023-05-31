@@ -41,8 +41,6 @@ def analyze_document():
     csvs = split_csv(document_content)
     messages = []
     for csv in csvs:
-        print(csv)
-        print(csv.split('\n'))
         response = create_chat_completion(api_key, [
             build_message('Interpret the following CSV and provide a summary highlighting interesting insights, avoid starting the message with something like "This data set this" or "These records are" since I am reusing the response and I want to be able to concatenate your different responses'),
             build_message(csv)
@@ -50,7 +48,6 @@ def analyze_document():
         response_content = response.json()
         if response.ok and response_content['choices']:
             messages += [get_content_from_successful_chat_response(response_content)]
-        print(response_content)
     header = document_content.split('\n')[0]
     follow_up_response = create_chat_completion(api_key, [
         build_message('Interpret the following list of CSV headers and provide an extended summary, then a list of 10 suggestions for further analysis'),
